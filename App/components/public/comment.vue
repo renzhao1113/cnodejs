@@ -5,6 +5,7 @@
 	</div>
 </template>
 <script>
+	import { Spinner } from 'mint-ui';
 	export default {
 		data(){
 			return {
@@ -43,14 +44,14 @@
 		},
 		methods:{
 			huifu(){
-//				console.log("作者的id",this.$store.getters.getMyInfo.id);
-//				console.log("话题id",this.topic_id);
+				//点击回复按钮，立即调用回复接口
 				this.$http.post(this.toChild+"/topic/"+this.topic_id+"/replies",{
 					accesstoken:this.access,
 					content:this.content,
 					reply_id: this.reply_id || '',
 				})
 					.then(res=>{
+						//如果回复成功，重新获取话题详情，并将获取到的数据发送给父组件，最后，清空文本框
 						if(res.data.success){
 							this.getTopics(data=> {
 								this.$parent.$emit('commentSuccess',data);
@@ -80,8 +81,11 @@
 		computed:{
 
 		},
+		components:['Spinner'],
 		props:["toChild",'access','reply_id','topic_id','reply_to_name'],
 		created(){
+			//组件创建是，判断是否由父组件传来了reply_id
+			//如果有，说明当前回复的是一条评论，而非话题，就将文本框内填充上@****的文本内容，并添加相应用户的路由
 			if(this.reply_id){
 				this.content = "[@"+this.reply_to_name+"](#/user/"+this.reply_to_name+")";
 			}
