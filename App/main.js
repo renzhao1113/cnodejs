@@ -12,13 +12,19 @@ import './static/css/base.css';
 import './static/css/style.css';
 
 import App from './components/app.vue';
-import Home from './components/Home/home.vue';
-import TopicDetail from './components/Detail/topicDetail.vue';
-import AuthorDetail from './components/User/authorDetail.vue';
-import Messages from './components/User/messages.vue';
-// import UserCenter from './components/User/userCenter.vue';
-import Edit from './components/public/edit.vue';
-import Collections from './components/User/collections.vue';
+
+/*
+* 路由懒加载
+* 把组件按组分块
+* 有时候我们想把某个路由下的所有组件都打包在同个异步 chunk 中。只需要 给 chunk 命名，提供 require.ensure 第三个参数作为 chunk 的名称:
+* Webpack 将相同 chunk 下的所有异步模块打包到一个异步块里面 —— 这也意味着我们无须明确列出 require.ensure 的依赖（传空数组就行）。
+* */
+const Home = resolve => require.ensure([], () => resolve(require('./components/Home/home.vue')), 'Home');
+const TopicDetail = resolve => require.ensure([], () => resolve(require('./components/Detail/topicDetail.vue')), 'Detail');
+const AuthorDetail = resolve => require.ensure([], () => resolve(require('./components/User/authorDetail.vue')), 'User');
+const Messages = resolve => require.ensure([], () => resolve(require('./components/User/messages.vue')), 'User');
+const Collections = resolve => require.ensure([], () => resolve(require('./components/User/collections.vue')), 'User');
+const Edit = resolve => require.ensure([], () => resolve(require('./components/public/edit.vue')), 'Public');
 
 let router = new VueRouter();
 router.addRoutes([
@@ -28,7 +34,6 @@ router.addRoutes([
 	{name:'user',path:'/user/:name?',component:AuthorDetail},
 	{name:'userMessages',path:'/user/:name?/messages',component:Messages},
 	{name:'collections',path:'/user/:name?/collections',component:Collections},
-	// {name:'userCenter',path:'/usercenter',component:UserCenter},
 	{name:'edit',path:'/topic/edit/:id?',component:Edit},
 ])
 
