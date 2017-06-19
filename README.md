@@ -8,4 +8,4 @@ npm install
 # 打包运行
 在App目录中运行 webpack 命令
 
-运行dist目录中的index.html
+运行dist目录中的index.html 123
