@@ -11,7 +11,7 @@ module.exports = {
 	},
 	output: {
 		path: __dirname + '/dist/',
-		filename: 'build.js'
+		filename: 'build.js',
 	},
 	module: {
 		loaders: [
@@ -19,8 +19,12 @@ module.exports = {
 				test: /\.less$/,
 				loader: 'style-loader!css-loader!autoprefixer-loader!less-loader'
 			}, {
-				test: /\.(png|jpg|gif|ttf|svg|woff|eot|woff2)$/,
-				loader: 'url-loader?limit=5000'
+				test: /\.(png|jpg|gif|svg)$/,
+				loader: 'url-loader?limit=8192&name=static/images/[hash:8].[name].[ext]'
+			},
+			{
+				test: /\.(ttf|woff|eot|woff2)$/,
+				loader: 'url-loader?limit=4000&name=static/font/[hash:8].[name].[ext]'
 			},
 			/*{
 				test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/,

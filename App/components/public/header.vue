@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<header>
-			<img class="logo" src="/static/images/cnodejs_light.svg" alt="">
+			<img class="logo" src="../../static/images/cnodejs_light.svg" alt="">
 			<form action="">
 				<input type="search" v-model="key" placeholder="search...">
 			</form>

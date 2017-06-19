@@ -17,9 +17,14 @@
 		<div class="replies">
 			<div class="replies-amount">{{data.reply_count}}回复</div>
 
-			<div  v-for="(item,index) of data.replies" :reply-id="item.id" :id="item.id" :reply-to-id="item.reply_id" :key="index">
+			<div  v-for="(item,index) of data.replies"
+					:reply-id="item.id"
+					:id="item.id"
+					:reply-to-id="item.reply_id"
+					:key="index">
 				<div class="replies-author-info">
-					<router-link  class="touxiang fl" :to="{name:'user',params:{name:item.author.loginname}}">
+					<router-link  class="touxiang fl"
+									  :to="{name:'user',params:{name:item.author.loginname}}">
 						<img class="" :src="item.author.avatar_url" alt="">
 					</router-link>
 					<span class="fr zan" @click="dianZan(item.id)">赞{{item.ups.length}}</span>
@@ -49,9 +54,18 @@
 	export default {
 		data(){
 			return {
-				data:{},
+				data:{
+					author:{
+						loginname:'未知用户'
+					}
+				},
 				collected:false,
 				zan:0,
+				//此属性用来记录用户将要回复哪条评论，点击回复按钮时，相应的下标index会赋值给replyIndex，
+				//show方法会返回当前这个replyIndex
+				//通过v-if判断show()的返回值是否等于index，这种方式可以保证每次只会显示一个文本框，也就只调用一次comment组件
+				//试想一下，点击第1条评论的回复按钮，show()返回1，index==1，第一个文本框显示
+				//点击第二条评论的回复按钮，index==2， show()也返回2，固第一条评论不满足条件，该文本框就不会被渲染
 				replyIndex:-1,
 			}
 		},
@@ -106,7 +120,7 @@
 			},
 			//获取话题详情
 			getTopics(){
-				this.$http.get(this.toChild+'/topic/'+this.$route.params.id+"?accesstoken="+this.access)
+				this.$http.get(this.toChild+'/topic/'+this.$route.params.id+"?accesstoken="+this.access,true)
 					.then(res => {
 						this.loading=false;
 						this.data = res.data.data;
